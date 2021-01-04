@@ -1,0 +1,8 @@
+<table name="auth2fa_authlog">
+	<column name="idx" type="number" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+	<column name="member_srl" type="number" notnull="notnull" />
+	<column name="type" type="varchar" size="5" notnull="notnull" index="idx_type" />
+	<column name="code" type="varchar" size="10" notnull="notnull" index="idx_code" />
+	<column name="issuccess" type="varchar" size="5" notnull="notnull" index="idx_issuccess" />
+	<column name="time" type="number" notnull="notnull" index="idx_time" />
+</table>

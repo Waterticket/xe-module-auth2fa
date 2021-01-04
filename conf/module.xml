@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<grants>
+	</grants>
+	<actions>
+		<!-- 관리자 액션 -->
+		<action name="dispAuth2faAdminConfig" type="view" menu_name="auth2fa" admin_index="true" />
+		<action name="procAuth2faAdminInsertConfig" type="controller" />
+		<!-- 일반 액션 -->
+		<action name="dispAuth2faIndex" type="view" index="true" />
+		<action name="dispAuth2faUserConfig" type="view" index="true" />
+	</actions>
+	<menus>
+		<menu name="auth2fa" type="all">
+			<title xml:lang="ko">2FA 인증 모듈</title>
+		</menu>
+	</menus>
+</module>
