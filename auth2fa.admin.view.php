@@ -28,10 +28,12 @@ class Auth2faAdminView extends Auth2fa
 
 		$oModuleModel = getModel('module');
 		$skin_list = $oModuleModel->getSkins($this->module_path);
+		$auth_type = array("GGL"=>"Google OTP", "ATY"=>"Authy");
 		
 		// Context에 세팅
 		Context::set('auth2fa_config', $config);
 		Context::set('skin_list', $skin_list);
+		Context::set('auth_type', $auth_type);
 		
 		// 스킨 파일 지정
 		$this->setTemplateFile('config');

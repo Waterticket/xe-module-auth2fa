@@ -46,4 +46,9 @@ class Auth2faController extends Auth2fa
 //			}
 //		}
 	}
+	
+	function procAuth2faUserConfig()
+	{
+		
+	}
 }

@@ -8,6 +8,31 @@
 	<div class="message {$XE_VALIDATOR_MESSAGE_TYPE}" cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/auth2fa/tpl/config/1'">
 		<p>{$XE_VALIDATOR_MESSAGE}</p>
 	</div>
+
+	<section class="section">
+		<h1>기본 설정</h1>
+		<div class="x_control-group">
+			<label class="x_control-label" for="module_enabled">2FA 인증기능 사용</label>
+			<div class="x_controls">
+				<select name="module_enabled" id="module_enabled">
+					<option value="Y" selected="selected"|cond="$auth2fa_config->module_enabled == 'Y'">{$lang->cmd_yes}</option>
+					<option value="N" selected="selected"|cond="$auth2fa_config->module_enabled != 'Y'">{$lang->cmd_no}</option>
+				</select><br>
+				2FA 기능을 사용합니다.
+			</div>
+		</div>
+
+		<div class="x_control-group">
+			<label class="x_control-label">2FA 인증 방식</label>
+			<div class="x_controls">
+				<!--@foreach($auth_type as $cd => $nm)-->
+				<label class="no-block"><input type="checkbox" value="{$cd}" name="auth_allowed_type[]" checked="checked"|cond="is_array($auth2fa_config->auth_allowed_type) && in_array($cd, $auth2fa_config->auth_allowed_type)">&nbsp;{$nm}</label>&nbsp;&nbsp;
+				<!--@endforeach-->
+				<br>
+				유저가 사용할 수 있는 인증 방식을 선택해주세요.
+			</div>
+		</div>
+	</section>
 	
 	<section class="section">
 		<h1>API 설정</h1>

@@ -1,1 +1,35 @@
+.update {
+	padding: 19px 15px;
+	color: #fefefe;
+	font-size: 14px;
+}
+
+.update a {
+	padding: 5px 8px;
+	margin-left: 15px;
+	background-color: white;
+	border-radius: 3px;
+}
+
+.update.new {
+	background-color: #2fa9f6;
+}
+
+.update.danger {
+	background-color: #f64b2f;
+}
+
+.update.normal {
+	background-color: #7eb62e;
+}
+
+.auth_module_block {
+	background-image: url("https://api.hoto.dev/get/charm.gif"),
+	url("data:image/gif;base64,R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==");
+	background-repeat: no-repeat;
+}
+
+.no-block {
+	display: inline !important;
+}
 
