@@ -28,22 +28,22 @@ class Auth2faController extends Auth2fa
 	}
 
 	function triggerHijackLogin(&$obj) {
-		if(!Context::get("is_logged") || $obj->act === "dispMemberLogout") {
-			unset($_SESSION['auth2fa_passed']);
-			return;
-		}
-
-		$oAuth2FAModel = getModel('auth2fa');
-		$userconfig = $oAuth2FAModel->getUserConfig(Context::get('logged_info')->member_srl);
-		if($userconfig->use === "Y") {
-			$allowedact = array("dispGoogleotpInputotp","procGoogleotpInputotp","procMemberLogin","dispMemberLogout");
-			if(!in_array($obj->act,$allowedact) && !$_SESSION['auth2fa_passed'])
-			{
-				$_SESSION['beforeaddress'] = getNotEncodedUrl();
-				header("Location: " . getNotEncodedUrl('act','dispGoogleotpInputotp'));
-				Context::close();
-				die();
-			}
-		}
+//		if(!Context::get("is_logged") || $obj->act === "dispMemberLogout") {
+//			unset($_SESSION['auth2fa_passed']);
+//			return;
+//		}
+//
+//		$oAuth2FAModel = getModel('auth2fa');
+//		$userconfig = $oAuth2FAModel->getUserConfig(Context::get('logged_info')->member_srl);
+//		if($userconfig->use === "Y") {
+//			$allowedact = array("dispGoogleotpInputotp","procGoogleotpInputotp","procMemberLogin","dispMemberLogout");
+//			if(!in_array($obj->act,$allowedact) && !$_SESSION['auth2fa_passed'])
+//			{
+//				$_SESSION['beforeaddress'] = getNotEncodedUrl();
+//				header("Location: " . getNotEncodedUrl('act','dispGoogleotpInputotp'));
+//				Context::close();
+//				die();
+//			}
+//		}
 	}
 }

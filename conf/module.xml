@@ -7,8 +7,8 @@
 		<action name="dispAuth2faAdminConfig" type="view" menu_name="auth2fa" admin_index="true" />
 		<action name="procAuth2faAdminInsertConfig" type="controller" />
 		<!-- 일반 액션 -->
-		<action name="dispAuth2faIndex" type="view" index="true" />
-		<action name="dispAuth2faUserConfig" type="view" index="true" />
+		<action name="dispAuth2faUserConfig" type="view" />
+		<action name="procAuth2faUserConfig" type="controller" />
 	</actions>
 	<menus>
 		<menu name="auth2fa" type="all">

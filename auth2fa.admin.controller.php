@@ -21,14 +21,17 @@ class Auth2faAdminController extends Auth2fa
 		$vars = Context::getRequestVars();
 		
 		// 제출받은 데이터를 각각 적절히 필터링하여 설정 변경
-		if (in_array($vars->example_config, ['Y', 'N']))
-		{
-			$config->example_config = $vars->example_config;
-		}
-		else
-		{
-			return $this->createObject(-1, '설정값이 이상함');
-		}
+//		if (in_array($vars->example_config, ['Y', 'N']))
+//		{
+//			$config->example_config = $vars->example_config;
+//		}
+//		else
+//		{
+//			return $this->createObject(-1, '설정값이 이상함');
+//		}
+		
+		$config->authy_api_key = $vars->authy_api_key;
+		$config->skin = $vars->skin;
 		
 		// 변경된 설정을 저장
 		$output = $this->setConfig($config);
