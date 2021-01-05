@@ -1,14 +1,4 @@
-<load target="css/config.css" />
-<load target="js/config.js" />
-
-<div class="x_page-header">
-	<h1>{$lang->cmd_auth2fa}</h1>
-</div>
-
-<ul class="x_nav x_nav-tabs">
-	<li class="x_active"|cond="$act == 'dispAuth2faAdminConfig'"><a href="{getUrl('', 'module', 'admin', 'act', 'dispAuth2faAdminConfig')}">{$lang->cmd_auth2fa_general_config}</a></li>
-</ul>
-
+<include target="__header.html" />
 <form class="x_form-horizontal" action="./" method="post" id="auth2fa">
 	<input type="hidden" name="module" value="auth2fa" />
 	<input type="hidden" name="act" value="procAuth2faAdminInsertConfig" />
@@ -20,12 +10,24 @@
 	</div>
 	
 	<section class="section">
+		<h1>API 설정</h1>
 		<div class="x_control-group">
-			<label class="x_control-label" for="example_config">{$lang->cmd_auth2fa_example_config}</label>
+			<label class="x_control-label" for="authy_api_key">Authy API Key</label>
 			<div class="x_controls">
-				<select name="example_config" id="example_config">
-					<option value="Y" selected="selected"|cond="$auth2fa_config->example_config !== 'N'">{$lang->cmd_yes}</option>
-					<option value="N" selected="selected"|cond="$auth2fa_config->example_config === 'N'">{$lang->cmd_no}</option>
+				<input type="text" id="authy_api_key" name="authy_api_key" value="{$auth2fa_config->authy_api_key}">
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<h1>스킨설정</h1>
+		<div class="x_control-group">
+			<label class="x_control-label" for="skin">{$lang->skin}</label>
+			<div class="x_controls">
+				<select name="skin" id="skin" onchange="doDisplaySkinColorset(this); return false;">
+					<option loop="$skin_list => $key, $val" value="{$key}" selected="selected"|cond="$config->skin == $key">
+						{$val->title} ({escape($key)})
+					</option>
 				</select>
 			</div>
 		</div>
