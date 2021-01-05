@@ -1,4 +1,10 @@
 <?php
+require_once(_XE_PATH_.'modules/auth2fa/libs/GoogleOTP/GoogleAuthenticator.php');
+require_once(_XE_PATH_.'modules/auth2fa/libs/Authy/AuthyApi.php');
+require_once(_XE_PATH_.'modules/auth2fa/libs/Authy/AuthyFormatException.php');
+require_once(_XE_PATH_.'modules/auth2fa/libs/Authy/AuthyResponse.php');
+require_once(_XE_PATH_.'modules/auth2fa/libs/Authy/AuthyToken.php');
+require_once(_XE_PATH_.'modules/auth2fa/libs/Authy/AuthyUser.php');
 
 /**
  * 2FA 인증 모듈
@@ -9,87 +15,101 @@
  */
 class Auth2faModel extends Auth2fa
 {
-	function insertNewConfig($member_srl)
+	/**
+	 * @brief 새로운 유저 설정을 추가합니다
+	 * @param $obj
+	 * @return BaseObject|object
+	 * @throws Exception
+	 */
+	function insertNewConfig($obj)
 	{
-		if($this->checkUserConfig($member_srl)) return FALSE;
-
-		$ga = new PHPGangsta_GoogleAuthenticator();
-		$cond = new stdClass();
-		$cond->srl=$member_srl;
-		$cond->otp_id = $ga->createSecret();
-		$cond->use = "N";
-		$output = executeQuery('auth2fa.insertuserconfig', $cond);
-		return $output->toBool();
-	}
-
-	function insertAuthlog($member_srl,$number,$issuccess) {
-		if(!$this->checkUserConfig($member_srl)) return FALSE;
-
-		$cond = new stdClass();
-		$cond->srl = $member_srl;
-		$cond->number = $number;
-		$cond->issuccess = $issuccess;
-		$cond->time = time();
-		$output = executeQuery('googleotp.insertGoogleotpauthlog', $cond);
-		return $output;
-	}
-
-	function checkUserConfig($member_srl)
-	{
-		$cond = new stdClass();
-		$cond->srl = $member_srl;
-		$output = executeQuery('googleotp.getGoogleotpuserconfigbySrl', $cond);
-		if(!isset($output->data->otp_id)) return FALSE;
-		else return TRUE;
-	}
-
-	function checkUsedNumber($member_srl,$number) {
-		// 5분전 입력한 인증코드 이후만 조회함
-		$cond = new stdClass();
-		$cond->srl = $member_srl;
-		$cond->number = $number;
-		$cond->issuccess = "Y";
-		$cond->time = time() - 300;
-
-		$output = executeQueryArray('googleotp.getGoogleotpauthlogbySrl', $cond);
-		if(!isset($output->data[0])) return TRUE;
-		else return FALSE;
-	}
-
-	function generateQRCode($member_srl,$key)
-	{
-		$ga = new PHPGangsta_GoogleAuthenticator();
-		return $ga->getQRCodeGoogleUrl($member_srl, $key);
-	}
-
-	function generateNewOTP($member_srl)
-	{
-		if(!$this->checkUserConfig($member_srl)) {
-			return FALSE;
-		} else {
-			$ga = new PHPGangsta_GoogleAuthenticator();
-
-			$cond = new stdClass();
-			$cond->srl=$member_srl;
-			$cond->otp_id = $ga->createSecret();
-			$output = executeQuery('googleotp.updateGoogleotpkeybySrl', $cond);
-			return $output->toBool();
+		$config = $this->getConfig();
+		if($this->checkUserConfig($obj->member_srl, $obj->type)) return $this->createObject(-1, 'already_data_exist'); // 해당 타입의 데이터가 있으면 종료
+		
+		$conf = new stdClass();
+		$conf->member_srl = $obj->member_srl;
+		$conf->time = time();
+		
+		switch($obj->type)
+		{
+			case "GGL": // GoogleOTP
+				$ga = new PHPGangsta_GoogleAuthenticator();
+				$conf->otp_id = $ga->createSecret();
+				$conf->use = "N";
+				break;
+				
+			case "ATY": // Authy
+				$authy_api = new Authy\AuthyApi($config->authy_api_key);
+				$user = $authy_api->registerUser($obj->email, $obj->cellphone, $obj->country_code);
+				if($user->ok()) {
+					$conf->otp_id = $user->id();
+					$conf->use = "N";
+				} else {
+					$error_str = "";
+					foreach($user->errors() as $field => $message) {
+						$error_str .= $field." ".$message;
+					}
+					return $this->createObject(-1, $error_str);
+				}
+				break;
+				
+			case "EML": // Email
+				$conf->otp_id = "";
+				$conf->use = "N";
+				break;
+				
+			case "SMS": // SMS
+				$conf->otp_id = "";
+				$conf->use = "N";
+				break;
 		}
+		
+		$output = executeQuery('auth2fa.insertMemberConfig', $conf);
+		return $output; //->toBool();
 	}
 
-	function checkOTPNumber($member_srl,$number)
+	/**
+	 * @brief 특정 타입의 유저 설정이 있는지 확인
+	 * @param $member_srl
+	 * @param $type
+	 * @return bool
+	 */
+	function checkUserConfig($member_srl, $type)
 	{
-		$config = $this->getUserConfig($member_srl);
-		$ga = new PHPGangsta_GoogleAuthenticator();
-		return $ga->verifyCode($config->otp_id, $number, 2);
+		$output = $this->getMemberConfig($member_srl, $type);
+		return ($output !== false);
 	}
 
-	function getUserConfig($member_srl)
+	/**
+	 * @brief 특정 타입의 유저 설정을 가져옵니다
+	 * @param $member_srl
+	 * @param $type
+	 * @return MemberConfig|false
+	 */
+	function getMemberConfig($member_srl, $type)
+	{
+		$conf = new stdClass();
+		$conf->member_srl = $member_srl;
+		$conf->type = $type;
+		$output = executeQuery('auth2fa.getMemberConfigbyMemberSrlAndType', $conf);
+
+		if(!$output->toBool()) return false;
+		else if(!isset($output->data->otp_id) || empty($output->data->otp_id)) return false;
+		else return $output->data;
+	}
+
+
+	/**
+	 * @brief 유저의 모든 유저 설정을 가져옵니다
+	 * @param $member_srl
+	 * @return Array|false
+	 */
+	function getMemberConfigs($member_srl)
 	{
 		//srl로 회원 조회
 		$cond = new stdClass();
-		$cond->srl=$member_srl;
-		$output = executeQuery('googleotp.getGoogleotpuserconfigbySrl', $cond);
+		$cond->member_srl = $member_srl;
+		$output = executeQuery('auth2fa.getMemberConfigsbyMemberSrl', $cond);
 		if(!$output->toBool()) return FALSE;
 		else return $output->data;
 	}
