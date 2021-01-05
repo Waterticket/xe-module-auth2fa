@@ -54,6 +54,11 @@ class Auth2fa extends ModuleObject
 		{
 			$oModuleModel = getModel('module');
 			self::$_config_cache = $oModuleModel->getModuleConfig($this->module) ?: new stdClass;
+
+			if(!isset(self::$_config_cache->module_enabled)) self::$_config_cache->module_enabled = 'Y'; // 모듈 활성화 여부
+			if(!isset(self::$_config_cache->auth_allowed_type)) self::$_config_cache->auth_allowed_type = array(); // 인증 허용 타입
+			if(!isset(self::$_config_cache->authy_api_key)) self::$_config_cache->authy_api_key = ""; // Authy API Key
+			if(!isset(self::$_config_cache->skin)) self::$_config_cache->skin = ""; // 스킨
 		}
 		return self::$_config_cache;
 	}
