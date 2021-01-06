@@ -23,9 +23,6 @@ class Auth2fa extends ModuleObject
 	 * 사용하지 않는 트리거는 삭제해 주는 것이 성능에 도움이 된다.
 	 */
 	protected static $_delete_triggers = array(
-		// array('comment.insertComment', 'after', 'controller', 'triggerAfterInsertComment'),
-		// array('comment.updateComment', 'after', 'controller', 'triggerAfterUpdateComment'),
-		// array('comment.deleteComment', 'after', 'controller', 'triggerAfterDeleteComment'),
 	);
 	
 	// =========================== 이 부분 아래는 수정하지 않아도 된다 ============================

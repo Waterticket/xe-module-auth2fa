@@ -1,0 +1,44 @@
+<load target="../../../member/skins/default/css/member.css" />
+<include target="../../../member/skins/default/common_header.html" />
+<div class="xm">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/auth2fa/tpl/2fa/2faconfig/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+	<form action="./" method="post" class="form-horizontal" id="fo_otpconfig">
+		<input type="hidden" name="module" value="auth2fa" />
+		<input type="hidden" name="act" value="procAuth2faAuthyConfig" />
+		<input type="hidden" name="xe_validator_id" value="modules/auth2fa/tpl/2fa/2faconfig/1" />
+		<input type="hidden" name="member_srl" value="{$member_srl}">
+		<section class="section">
+			<h1>Authy Setup</h1>
+			<div class="control-group">
+				<label class="control-label">이메일</label>
+				<div class="controls">
+					<input type="text" id="authy_email" name="authy_email" value="{$user_data->email_address}">
+					<p class="help-block">이메일을 입력해주세요</p>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">전화번호</label>
+				<div class="controls">
+					<input type="text" id="authy_phone_number" name="authy_phone_number" value="{$user_data->phone_number}">
+					<p class="help-block">전화번호를 입력해주세요</p>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">국가 번호 (+82)</label>
+				<div class="controls">
+					<input type="text" id="authy_phone_country" name="authy_phone_country" value="{$user_data->phone_country}">
+					<p class="help-block">국가 번호를 입력해주세요</p>
+				</div>
+			</div>
+		</section>
+		<div class="clearfix btnArea">
+			<div class="pull-right">
+				<button class="btn btn-primary" type="submit">설정 저장</button>
+			</div>
+		</div>
+	</form>
+</div>
+<include target="../../../member/skins/default/common_footer.html" />
+{@ debugPrint($logged_info); }

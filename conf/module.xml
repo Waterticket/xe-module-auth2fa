@@ -9,6 +9,18 @@
 		<!-- 일반 액션 -->
 		<action name="dispAuth2faUserConfig" type="view" />
 		<action name="procAuth2faUserConfig" type="controller" />
+
+		<!-- 세부 설정 액션 -->
+		<action name="dispAuth2faAuthyConfig" type="view" />
+		<action name="dispAuth2faGoogleOTPConfig" type="view" />
+		<action name="procAuth2faAuthyConfig" type="controller" />
+		<action name="procAuth2faGoogleOTPConfig" type="controller" />
+		<action name="dispAuth2faAuthyVerifyApp" type="view" />
+		<action name="procAuth2faAuthyVerifyApp" type="controller" />
+		
+		<!-- 인증 액션 -->
+		<action name="dispAuth2faVerify" type="view" />
+		<action name="procAuth2faVerify" type="controller" />
 	</actions>
 	<menus>
 		<menu name="auth2fa" type="all">

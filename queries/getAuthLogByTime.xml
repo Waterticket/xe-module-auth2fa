@@ -1,0 +1,14 @@
+<query id="getAuthLogByTime" action="select">
+	<tables>
+		<table name="auth2fa_authlog" />
+	</tables>
+	<columns>
+		<column name="*" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" />
+		<condition operation="equal" column="code" var="code" notnull="notnull" pipe="and" />
+		<condition operation="more" column="time" var="time" notnull="notnull" pipe="and" />
+		<condition operation="equal" column="issuccess" var="issuccess" pipe="and" />
+	</conditions>
+</query>

@@ -1,0 +1,30 @@
+<load target="../../../member/skins/default/css/member.css" />
+<div class="xm">
+
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/auth2fa/tpl/inputotp/otplogin/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+
+	<form action="./" method="post" class="form-horizontal" id="fo_otplogin">
+		<input type="hidden" name="module" value=auth2fa />
+		<input type="hidden" name="act" value="procAuth2faVerify" />
+		<input type="hidden" name="xe_validator_id" value="modules/auth2fa/tpl/inputotp/otplogin/1" />
+		<input type="hidden" name="member_srl" value="{$member_srl}">
+		<section class="section">
+			<h1>Google OTP 인증</h1>
+			<div class="control-group">
+				<label class="control-label">OTP 입력</label>
+				<div class="controls">
+					<input type="text" name="otp_num" />
+					<p class="help-block">Google OTP 앱에 뜬 번호를 입력해주세요.</p>
+				</div>
+			</div>
+		</section>
+		<div class="clearfix btnArea">
+			<div class="pull-right">
+				<button class="btn btn-primary" type="submit">로그인</button>
+			</div>
+		</div>
+	</form>
+</div>
+<include target="../../../member/skins/default/common_footer.html" />

@@ -1,0 +1,12 @@
+<query id="insertAuthLog" action="insert">
+	<tables>
+		<table name="auth2fa_authlog" />
+	</tables>
+	<columns>
+		<column name="member_srl" var="member_srl" notnull="notnull" />
+		<column name="type" var="type" notnull="notnull" />
+		<column name="code" var="code" notnull="notnull" />
+		<column name="issuccess" var="issuccess" notnull="notnull" />
+		<column name="time" var="time" notnull="notnull" />
+	</columns>
+</query>

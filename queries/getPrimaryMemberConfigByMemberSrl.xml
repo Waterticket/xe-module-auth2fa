@@ -1,0 +1,12 @@
+<query id="getPrimaryMemberConfigByMemberSrl" action="select">
+	<tables>
+		<table name="auth2fa_memberconfig" />
+	</tables>
+	<columns>
+		<column name="*" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="member_srl" var="member_srl" />
+		<condition operation="equal" column="use" var="use" pipe="and" />
+	</conditions>
+</query>

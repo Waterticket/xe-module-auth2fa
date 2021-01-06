@@ -30,7 +30,6 @@ class Auth2faAdminController extends Auth2fa
 			return $this->createObject(-1, '설정값이 이상함');
 		}
 		
-		
 		$config->auth_allowed_type = $vars->auth_allowed_type;
 		$config->authy_api_key = $vars->authy_api_key;
 		$config->skin = $vars->skin;
